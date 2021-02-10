@@ -3,8 +3,7 @@ Treehouse Techdegree:
 FSJS Project 2 - Data Pagination and Filtering
 */
 
-//The search functionality. A search bar is created and displayed on the page.
-
+//The `search` function. Initially a search bar is created and displayed on the page. The search button and the search box are then stored in variables.
 function search(list) {
    const header = document.querySelector('.header');
    const searchBar =
@@ -14,14 +13,14 @@ function search(list) {
       </label>`
    header.insertAdjacentHTML('beforeend', searchBar);
 
-/* 
-The first part of the search functionality is the search button. Using a click event listener, we begin with an empty array for the search results.
-Using a for loop, all 42 student objects are looped through. With a conditional statement, search is checked to see if what is entered is at least 
-1 character and if all that is entered matches either first name or last name. If so, that matching student object is pushed into the new results array.
-The showpage function is invoked using the new results array to display all search matches.
-*/
    const searchButton = document.querySelector('button')
+   const searchBox = document.querySelector('.student-search');
 
+   /* 
+   The search button. Using a click event listener, all 42 student objects are looped through and if the search contains at least one character and if it
+   matches partially either first name or last name, the match is pushed to a results array. The `showPage` function is invoked to display all search matches. 
+   The `addPagination` function is invoked to present the corresponding buttons. Finally, if there are no search results a message stating this is displayed.
+   */
    searchButton.addEventListener('click', (e) => {
       const searchEntry = document.querySelector('#search').value;
       const resultsArray = [];
@@ -36,14 +35,13 @@ The showpage function is invoked using the new results array to display all sear
 
       }
       showPage(resultsArray, 1);
-
+      addPagination(resultsArray);
+      if (resultsArray.length === 0) {
+         document.querySelector('.student-list').innerHTML = 'Sorry, no matches.';
+      }
    })
-   
-/*
-The second part of the search functionality is placed in a second event listener. It is very similar to the first event listener but listens for
-a keyup event instead of a click of the search button.
-*/
-   const searchBox = document.querySelector('.student-search');
+
+   //The search box. It is very similar to the first event listener but listens for a keyup event instead of a click on the search button.
    searchBox.addEventListener('keyup', (e) => {
       const resultsArray = [];
       const search = e.target.value.toLowerCase();
@@ -54,18 +52,19 @@ a keyup event instead of a click of the search button.
          if (search.length !== 0 && firstName.includes(search) || lastName.includes(search)) {
             resultsArray.push(list[i]);
          }
-
       }
       showPage(resultsArray, 1);
-
+      addPagination(resultsArray);
+      if (resultsArray.length === 0) {
+         document.querySelector('.student-list').innerHTML = 'Sorry, no matches.';
+      }
    })
 }
 
 /*
-The `showPage` function uses a loop to create and append nine student elements to the current page. When invoked, it is supplied with the arguments
-list - which is the full list of students - and page - which represents the current page. Using a for loop, it checks so that there are only
-nine students on each page and in the correct order. It then grabs data from each object in the list of students, creates an HTML element stored 
-in the studentOnPage variable, and outputs that one element to the DOM tree. This is repeated with each object from the list of students.
+The `showPage` function creates and appends nine student elements to the current page. When invoked, it is supplied with the full list of students 
+and the current page. Using a for loop, it checks so that there are only nine students on each page and in the correct order. It then grabs data 
+from each object in the list of students, creates an HTML element and outputs that one element to the DOM tree.
 */
 function showPage(list, page) {
    const startIndex = (page * 9) - 9;
@@ -110,8 +109,7 @@ function addPagination(list) {
       </li>`
       linkList.insertAdjacentHTML('beforeend', button);
    }
-
-   document.querySelector('button').className = 'active';
+   document.querySelector('button').className = 'active'; //
 
    linkList.addEventListener('click', (e) => {
       if (e.target.tagName === 'BUTTON') {
@@ -123,7 +121,7 @@ function addPagination(list) {
 }
 
 
-//All functions are called initially when the page is loaded, to add the search box, the students on the first page and the buttons below.
-showPage(data, 1);
+//All functions are called initially when the page is loaded to add the pagination buttons, the students on the first page and a search box.
 addPagination(data);
+showPage(data, 1);
 search(data);
