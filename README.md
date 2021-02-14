@@ -1,3 +1,3 @@
 # Treehouse FSJS Techdegree: project 2 - Data Pagination and Filtering
-This ia a page that displays a list of students, nine on each page. With a pagination functionality and a filter functionality through a simple search box.
+This is a page that displays a list of students, nine on each page, with pagination. There is also a filter functionality through a simple search box.
  
